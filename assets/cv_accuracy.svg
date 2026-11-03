@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="550" viewBox="0 0 1000 550" role="img" aria-labelledby="title desc">
+<title id="title">Word-in-Context, 5-fold cross-validation OOF accuracy</title>
+<desc id="desc">Comparison of DeBERTa-large and RoBERTa-large accuracy across six input representations using saved notebook results. DeBERTa no_highlight reaches 80.81 percent.</desc>
+<rect width="1000" height="550" fill="white"/>
+<text x="65" y="54" font-family="Arial, sans-serif" font-size="26" fill="#111827" font-weight="600">Input representation ablation · WiC</text>
+<text x="65" y="79" font-family="Arial, sans-serif" font-size="15" fill="#64748b">Out-of-fold accuracy (%) · 5-fold stratified cross-validation · saved notebook results</text>
+<rect x="540" y="30" width="14" height="14" fill="#326CC9" rx="2"/><text x="563" y="42" font-size="14" fill="#334155">DeBERTa-large</text>
+<rect x="707" y="30" width="14" height="14" fill="#D59044" rx="2"/><text x="730" y="42" font-size="14" fill="#334155">RoBERTa-large</text>
+<g font-family="Arial, sans-serif"><line x1="92" y1="432" x2="944" y2="432" stroke="#e5e7eb" stroke-width="1"/><text x="76" y="436" font-size="14" fill="#475569" text-anchor="end">70%</text>
+<line x1="92" y1="324.6666666666667" x2="944" y2="324.6666666666667" stroke="#e5e7eb" stroke-width="1"/><text x="76" y="328.6666666666667" font-size="14" fill="#475569" text-anchor="end">75%</text>
+<line x1="92" y1="217.33333333333334" x2="944" y2="217.33333333333334" stroke="#e5e7eb" stroke-width="1"/><text x="76" y="221.33333333333334" font-size="14" fill="#475569" text-anchor="end">80%</text>
+<line x1="92" y1="110" x2="944" y2="110" stroke="#e5e7eb" stroke-width="1"/><text x="76" y="114" font-size="14" fill="#475569" text-anchor="end">85%</text>
+<rect x="124" y="248.46" width="38" height="183.54" rx="4" fill="#326CC9"/>
+<rect x="167" y="273.79" width="38" height="158.21" rx="4" fill="#D59044"/>
+<text x="143" y="240.46000000000006" font-size="12" text-anchor="middle" fill="#1e40af">78.55</text>
+<text x="186" y="265.79066666666654" font-size="12" text-anchor="middle" fill="#92400e">77.37</text>
+<text x="164" y="458" font-size="13" text-anchor="middle" fill="#334155">full</text>
+<rect x="258" y="199.95" width="38" height="232.05" rx="4" fill="#326CC9"/>
+<rect x="301" y="262.84" width="38" height="169.16" rx="4" fill="#D59044"/>
+<text x="277" y="191.94533333333328" font-size="12" text-anchor="middle" fill="#1e40af">80.81</text>
+<text x="320" y="254.8426666666668" font-size="12" text-anchor="middle" fill="#92400e">77.88</text>
+<text x="298" y="458" font-size="13" text-anchor="middle" fill="#334155">no_highlight</text>
+<rect x="392" y="249.10" width="38" height="182.90" rx="4" fill="#326CC9"/>
+<rect x="435" y="289.03" width="38" height="142.97" rx="4" fill="#D59044"/>
+<text x="411" y="241.1040000000001" font-size="12" text-anchor="middle" fill="#1e40af">78.52</text>
+<text x="454" y="281.03200000000004" font-size="12" text-anchor="middle" fill="#92400e">76.66</text>
+<text x="432" y="458" font-size="13" text-anchor="middle" fill="#334155">no_prefix</text>
+<rect x="526" y="232.57" width="38" height="199.43" rx="4" fill="#326CC9"/>
+<rect x="569" y="309.64" width="38" height="122.36" rx="4" fill="#D59044"/>
+<text x="545" y="224.57466666666653" font-size="12" text-anchor="middle" fill="#1e40af">79.29</text>
+<text x="588" y="301.63999999999993" font-size="12" text-anchor="middle" fill="#92400e">75.70</text>
+<text x="566" y="458" font-size="13" text-anchor="middle" fill="#334155">plain</text>
+<rect x="660" y="224.42" width="38" height="207.58" rx="4" fill="#326CC9"/>
+<rect x="703" y="270.36" width="38" height="161.64" rx="4" fill="#D59044"/>
+<text x="679" y="216.4173333333333" font-size="12" text-anchor="middle" fill="#1e40af">79.67</text>
+<text x="722" y="262.356" font-size="12" text-anchor="middle" fill="#92400e">77.53</text>
+<text x="700" y="458" font-size="13" text-anchor="middle" fill="#334155">word_only</text>
+<rect x="794" y="213.04" width="38" height="218.96" rx="4" fill="#326CC9"/>
+<rect x="837" y="304.27" width="38" height="127.73" rx="4" fill="#D59044"/>
+<text x="813" y="205.03999999999994" font-size="12" text-anchor="middle" fill="#1e40af">80.20</text>
+<text x="856" y="296.2733333333333" font-size="12" text-anchor="middle" fill="#92400e">75.95</text>
+<text x="834" y="458" font-size="13" text-anchor="middle" fill="#334155">pos_only</text></g>
+<text x="65" y="508" font-family="Arial, sans-serif" font-size="13" fill="#64748b">Source: results/cv_metrics_from_notebook_output.csv · Data are historical outputs, not newly computed</text>
+</svg>

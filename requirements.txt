@@ -1,0 +1,13 @@
+# Main libraries used by the Colab notebook (versions are not pinned/tested here).
+torch
+transformers
+datasets
+evaluate
+accelerate
+sentencepiece
+scikit-learn
+pandas
+numpy
+matplotlib
+scipy
+torchvision

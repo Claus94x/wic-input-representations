@@ -1,0 +1,31 @@
+# Python / Jupyter
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+venv/
+.pytest_cache/
+*.py[cod]
+.DS_Store
+
+# Training data, model checkpoints and generated artifacts
+wic_data/
+data/
+outputs/
+models/
+checkpoints/
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.bin
+ablation_results.json
+cv_oof_preds.json
+final_pointer.json
+submission/
+
+# Local credentials / environment
+.env
+.env.*
+!.env.example
+credentials.json
+service_account*.json
