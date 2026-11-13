@@ -1,6 +1,9 @@
 # Main libraries used by the Colab notebook (versions are not pinned/tested here).
+# transformers>=4.51,<5: >=4.51 for ModernBert (mmBERT, Ettin, ModernBERT);
+# <5 because the custom-code backbones (NomicBERT, UltraBERT, EuroBERT, NeoBERT)
+# use APIs removed in transformers v5 (get_extended_attention_mask).
 torch
-transformers
+transformers>=4.51,<5
 datasets
 evaluate
 accelerate

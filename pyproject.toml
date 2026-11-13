@@ -1,0 +1,19 @@
+[project]
+name = "wic-input-representations"
+version = "0.1.0"
+requires-python = ">=3.12.10"
+dependencies = [
+    "accelerate>=1.15.0",
+    "datasets>=5.2.0",
+    "einops>=0.8.2",
+    "evaluate>=0.4.6",
+    "matplotlib>=3.11.2",
+    "numpy>=2.5.4",
+    "pandas>=3.1.1",
+    "scikit-learn>=1.9.1",
+    "scipy>=1.18.1",
+    "sentencepiece>=0.2.3",
+    "torch>=2.15.0",
+    "torchvision>=0.29.2",
+    "transformers>=4.51",
+]

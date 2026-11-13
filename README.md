@@ -53,6 +53,7 @@ results/
 docs/
   methodology.md                         # Experiment design and limitations
   running_the_notebook.md                # How to run it on Colab
+train_cv_new_models.py                   # Local k-fold CV script for extra backbones
 ```
 
 The **non-empty code cells in the main notebook have exactly the same source and order as the original notebook**, and their original saved outputs are preserved. Only empty code cells were omitted for readability; markdown notes and notebook-level presentation metadata were adjusted. The archived notebook retains all original code cells and outputs, including the empty cells.
@@ -65,6 +66,38 @@ The **non-empty code cells in the main notebook have exactly the same source and
 4. Run the training/CV sections only if you have the hardware and time required. The saved run uses 2 large backbones, 6 CV conditions and 5 folds (60 CV runs); model checkpoints and Drive result files are **not included** in this repository.
 
 The notebook was developed with Colab-specific assumptions. `requirements.txt` lists the main dependencies but **is not a verified environment lockfile**. Detailed instructions: [`docs/running_the_notebook.md`](docs/running_the_notebook.md).
+
+## Extended ablation: extra backbones (local training script)
+
+[`train_cv_new_models.py`](train_cv_new_models.py) runs the **same 5-fold stratified CV** as notebook section 8 (same WiC train+dev pool of 6,066 examples, same split seed 1234, same six conditions, same Optuna hyperparameters, same per-fold seeds) on seven additional backbones: NomicBERT (`nomic-ai/nomic-bert-2048`), UltraBERT (`dmis-lab/UltraBERT-150M`), Ettin (`jhu-clsp/ettin-encoder-150m`), EuroBERT (`EuroBERT/EuroBERT-210m`), NeoBERT (`chandar-lab/NeoBERT`), mmBERT (`jhu-clsp/mmBERT-base`), ModernBERT (`answerdotai/ModernBERT-base`). Only the model list differs from the notebook.
+
+It is tuned for Apple Silicon (MPS): FP32, effective batch 16 (identical optimizer steps to the notebook's 4×4), resumable run (OOF predictions are saved after every fold in `results/extra_models/cv/cv_oof_preds.json`).
+
+**Two environments, one results file.** The custom-code backbones split across transformers versions: NomicBERT needs **v4** (its code uses APIs removed in v5), while UltraBERT is **v5-native**. So the run is split in two, sharing the same OOF file (identical protocol/seeds either way):
+
+```bash
+# Environment 1: transformers 4.x — NomicBERT, Ettin, EuroBERT, NeoBERT, mmBERT, ModernBERT
+uv venv .venv && uv pip install -r requirements.txt
+.venv/bin/python train_cv_new_models.py --backbone nomic-ai/nomic-bert-2048 jhu-clsp/ettin-encoder-150m EuroBERT/EuroBERT-210m chandar-lab/NeoBERT jhu-clsp/mmBERT-base answerdotai/ModernBERT-base
+
+# Environment 2: transformers 5.x — UltraBERT only
+uv venv .venv-v5 && uv pip install -r requirements.txt && uv pip install 'transformers>=5'
+.venv-v5/bin/python train_cv_new_models.py --backbone dmis-lab/UltraBERT-150M
+
+# Useful flags (both environments)
+.venv/bin/python train_cv_new_models.py --folds 0     # quick sanity/benchmark (1 fold)
+.venv/bin/python train_cv_new_models.py --stats-only  # tables from saved OOF predictions
+```
+
+Note: NeoBERT's custom code imports `xformers` (CUDA-only, not available on macOS); the repo ships a minimal pure-torch `SwiGLU` stub in `vendor/xformers/` (mathematically identical, checkpoint-compatible) that the script puts on `sys.path` as a fallback.
+
+**GPU watchdog (Apple Silicon):** long MPS runs can be killed by the macOS GPU watchdog
+(`MPS command buffer execution failed: Impacting Interactivity`), especially with the display on
+and the GPU saturated. The script sets `AGX_RELAX_CDM_CTXSTORE_TIMEOUT=1` automatically, and since
+the run is resumable after every fold, if it crashes you just relaunch the same command (completed
+folds are skipped). For unattended runs, letting the display sleep reduces the risk further.
+
+Outputs: `results/extra_models/cv/cv_ablation_summary.csv` (per-condition OOF accuracy/F1), `cv_mcnemar_bootstrap.csv` (McNemar + Holm + bootstrap CIs), plus LaTeX tables printed to the log. If the run is interrupted, just re-launch it: completed folds are skipped.
 
 ## Limitations I would address next
 
