@@ -19,7 +19,6 @@ checkpoints/
 *.pth
 *.bin
 ablation_results.json
-cv_oof_preds.json
 final_pointer.json
 submission/
 
