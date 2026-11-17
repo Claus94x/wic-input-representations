@@ -39,6 +39,13 @@ from pathlib import Path
 # stessa GPU) — per run lunghi e' consigliabile display spento.
 os.environ.setdefault("AGX_RELAX_CDM_CTXSTORE_TIMEOUT", "1")
 
+# Tutti i pesi/tokenizer sono gia' in cache HF locale: forza la modalita'
+# offline per evitare che un check di rete al boot (huggingface.co) blocchi
+# lo script quando la rete e' degradata. Se manca qualcosa in cache l'errore
+# e' immediato e chiaro invece di un hang.
+os.environ.setdefault("HF_HUB_OFFLINE", "1")
+os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
+
 # Stub di xformers (vendor/) per i modelli custom-code su macOS: xformers
 # non ha build per Apple Silicon. Aggiunto a FINE di sys.path: se xformers
 # vero e' installato (es. Linux+GPU) quello vince.
@@ -49,7 +56,7 @@ import pandas as pd
 import torch
 import torch.nn as nn
 import evaluate
-from datasets import Dataset as HFDataset
+from datasets import Dataset as HFDataset, DownloadConfig
 from scipy.stats import binomtest
 from sklearn.metrics import f1_score
 from sklearn.model_selection import StratifiedKFold
@@ -215,8 +222,13 @@ def build_pool_split(train_df, dev_df):
 # ---------------------------------------------------------------------------
 # 5. Helper di training: IDENTICI al notebook (cell. 28), adatti a MPS
 # ---------------------------------------------------------------------------
-acc_metric = evaluate.load("accuracy")
-f1_metric  = evaluate.load("f1")
+# local_files_only=True: evaluate ha un layer di rete proprio (non huggingface_hub)
+# che fa HTTP HEAD di etag anche con metriche gia' in cache e NON rispetta
+# HF_HUB_OFFLINE -> con rete degradata lo script hangava all'avvio (connect
+# blackholed, nessun timeout efficace). Le metriche sono gia' in cache locale.
+_OFFLINE_DC = DownloadConfig(local_files_only=True)
+acc_metric = evaluate.load("accuracy", download_config=_OFFLINE_DC)
+f1_metric  = evaluate.load("f1", download_config=_OFFLINE_DC)
 
 def compute_metrics(eval_pred):
     logits, labels = eval_pred
